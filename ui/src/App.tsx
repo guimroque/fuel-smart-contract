@@ -65,7 +65,7 @@ function App() {
       try {
         await contract.functions.increment().txParams({ gasPrice: 1 }).call();
         getCount();
-      } catch(err) {
+        } catch(err) {
         console.log("error sending transaction...", err);
       }
     }
