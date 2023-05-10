@@ -6,7 +6,7 @@ Documentação: https://fuelbook.fuel.network/master/quickstart/developer-quicks
 - Instale [Rust](https://www.rust-lang.org/tools/install) e [Fuel toolchain](https://github.com/FuelLabs/fuelup)
 
 - Inicia o pacote de ferramentas: ```fuelup default beta-3```
-- Gera o build do contrato: ```forc build````
+- Gera o build do contrato: ```forc build```
 - Crie os testes: ```cargo install cargo-generate```
 
     1. Codifique seus testes no arquivo ```tests/harness```
