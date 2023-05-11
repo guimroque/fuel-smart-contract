@@ -21,5 +21,5 @@ Documentação: https://fuelbook.fuel.network/master/quickstart/developer-quicks
     2. Instale o sdk da fuel ```npm install fuels@0.38.0 @fuel-wallet/sdk --save```
     3. Gere os metodos do contrato dentro do projeto do frontend ```npx fuels typegen -i ../<NOME_DO_CONTRATO/>/out/debug/*-abi.json -o ./src/contracts```
     4. Insira o valor para a chave ```CONTRACT_ID``` com o ID de contrato gerado no item de deploy.
-    5. Execute o frontend ```yarn start``` e seu projeto estará rodando na porta 3001
+    5. Execute o frontend ```npm start``` e seu projeto estará rodando na porta 3001
 
