@@ -23,3 +23,5 @@ Documentação: https://fuelbook.fuel.network/master/quickstart/developer-quicks
     4. Insira o valor para a chave ```CONTRACT_ID``` com o ID de contrato gerado no item de deploy.
     5. Execute o frontend ```npm start``` e seu projeto estará rodando na porta 3001
 
+
+
