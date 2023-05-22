@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
-    "types": ["@fuel-wallet/sdk"],
     "target": "es5",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
+    "types": ["@fuel-wallet/sdk"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,

@@ -11,9 +11,9 @@ Documentação: https://fuelbook.fuel.network/master/quickstart/developer-quicks
 
     1. Codifique seus testes no arquivo ```tests/harness```
     2. Para rodar testes: ```cargo test```
-- Executa o contrato localmente: ```fuel-core run --ip 127.0.0.1 --port 4001 --chain ./chainConfig.json --db-path ./.fueldb```
+- Executa o contrato localmente: ```fuel-core run --ip 127.0.0.1 --port 4000 --chain ./chainConfig.json --db-path ./.fueldb```
     1. Edite no arquivo ```chainConfig.json```os valores de inicializacao da rede incluindo carteiras e coins quando necessarios
-- Faça deploy localmente: ```forc deploy --node-url 127.0.0.1:4001  --unsigned```
+- Faça deploy localmente: ```forc deploy --node-url 127.0.0.1:4000  --unsigned```
 - Acesse o link [NETWORK_EXPLORER](https://fuellabs.github.io/block-explorer-v2/beta-3/) configure o apontamento para a rede local para ter acesso as transações executadas localmente
 
 - Agora para rodar o front
@@ -24,4 +24,11 @@ Documentação: https://fuelbook.fuel.network/master/quickstart/developer-quicks
     5. Execute o frontend ```npm start``` e seu projeto estará rodando na porta 3001
 
 
+- Connect na sua [wallet](https://wallet.fuel.network/docs/install/)
+    1. Adicione uma nova conta a partir de uma chave privada ```0xa449b1ffee0e2205fa924c6740cc48b3b473aa28587df6dab12abc245d1f5298```
 
+- Gerenciamento da sua wallet via terminal
+    1. Com sua wallet criada, crie uma nova conta dentro da wallet: ```forc-wallet account```
+    2. Liste suas contas: ```forc-wallet accounts```
+    3. Obter chave privada: ```forc-wallet account <INDEX_CONTA/> private-key```
+    4. Obter chave pública: ```forc-wallet account <INDEX_CONTA/> public-key```

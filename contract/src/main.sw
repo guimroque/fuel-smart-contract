@@ -15,7 +15,6 @@ use ::events::{
 };
 use ::interface::{Info, NameRegistry};
 use std::{auth::msg_sender, block::timestamp, call_frames::msg_asset_id, context::msg_amount};
-
 /// Parametros configuráveis do contrato
 ///
 /// - ASSET_ID: Chave privada do dono deste contrato [0x00...0]
@@ -61,7 +60,7 @@ impl NameRegistry for Contract {
         duration: u64,
         owner: Identity,
         identity: Identity,
-    ) {
+    ) -> Record {
         if storage.names.get(name).is_some() {
             let record = storage.names.get(name).unwrap();
             require(timestamp() > record.expiry, RegistrationValidityError::NameNotExpired);
@@ -73,6 +72,9 @@ impl NameRegistry for Contract {
         let record = Record::new(timestamp() + duration, identity, owner);
 
         storage.names.insert(name, record);
+        storage.indexex_counter += 1;
+        storage.indexes.insert(storage.indexex_counter, name); 
+
 
         log(NameRegisteredEvent {
             expiry: record.expiry,
@@ -80,6 +82,8 @@ impl NameRegistry for Contract {
             owner,
             identity,
         });
+
+        return record
     }
 
     #[storage(read, write)]
@@ -165,10 +169,12 @@ impl Info for Contract {
             let storage_index = storage.indexes.get(index).unwrap();
             let result = storage.names.get(storage_index).unwrap();
             
-            match timestamp() < result.expiry {
+            match timestamp() > result.expiry {
                 true => Result::Ok(result),
                 false => Result::Err(RegistrationValidityError::NameExpired),
             }
             //Option::None => Result::Err(RegistrationValidityError::NameNotRegistered),
         }
+
+    
     }

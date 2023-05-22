@@ -9,8 +9,8 @@
   Fuel-Core version: 0.17.3
 */
 
+//export type { ContractAbi } from './ContractAbi';
 export type { CounterContractAbi } from './CounterContractAbi';
 
+//export { ContractAbi__factory } from './factories/ContractAbi__factory';
 export { CounterContractAbi__factory } from './factories/CounterContractAbi__factory';
-
-

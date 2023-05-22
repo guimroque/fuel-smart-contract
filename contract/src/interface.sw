@@ -35,7 +35,7 @@ abi NameRegistry {
     /// * Nome de registro já utilizado e nao expirado
     /// * Coins insuficientes para a duracao solicitada
     #[payable, storage(read, write)]
-    fn register(name: str[12], duration: u64, owner: Identity, identity: Identity);
+    fn register(name: str[12], duration: u64, owner: Identity, identity: Identity) -> Record;
 
     /// Troca de quem faz o uso do registro
     ///
