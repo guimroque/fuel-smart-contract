@@ -43,8 +43,8 @@ export type NameRegisteredEventInput = { expiry: BigNumberish, name: string, own
 export type NameRegisteredEventOutput = { expiry: BN, name: string, owner: IdentityOutput, identity: IdentityOutput };
 export type OwnerChangedEventInput = { name: string, new_owner: IdentityInput, previous_owner: IdentityInput };
 export type OwnerChangedEventOutput = { name: string, new_owner: IdentityOutput, previous_owner: IdentityOutput };
-export type RecordInput = { expiry: BigNumberish, identity: IdentityInput, owner: IdentityInput };
-export type RecordOutput = { expiry: BN, identity: IdentityOutput, owner: IdentityOutput };
+export type RecordInput = { expiry: BigNumberish, identity: IdentityInput, owner: IdentityInput, name: string };
+export type RecordOutput = { expiry: BN, identity: IdentityOutput, owner: IdentityOutput, name: string };
 export type RegistrationExtendedEventInput = { duration: BigNumberish, name: string, new_expiry: BigNumberish };
 export type RegistrationExtendedEventOutput = { duration: BN, name: string, new_expiry: BN };
 
@@ -56,8 +56,10 @@ interface CounterContractAbiInterface extends Interface {
     set_owner: FunctionFragment;
     expiry: FunctionFragment;
     getRecord: FunctionFragment;
+    getRecordCount: FunctionFragment;
     identity: FunctionFragment;
     owner: FunctionFragment;
+    recordByName: FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: 'extend', values: [string, BigNumberish]): Uint8Array;
@@ -66,8 +68,10 @@ interface CounterContractAbiInterface extends Interface {
   encodeFunctionData(functionFragment: 'set_owner', values: [string, IdentityInput]): Uint8Array;
   encodeFunctionData(functionFragment: 'expiry', values: [string]): Uint8Array;
   encodeFunctionData(functionFragment: 'getRecord', values: [BigNumberish]): Uint8Array;
+  encodeFunctionData(functionFragment: 'getRecordCount', values: []): Uint8Array;
   encodeFunctionData(functionFragment: 'identity', values: [string]): Uint8Array;
   encodeFunctionData(functionFragment: 'owner', values: [string]): Uint8Array;
+  encodeFunctionData(functionFragment: 'recordByName', values: [string]): Uint8Array;
 
   decodeFunctionData(functionFragment: 'extend', data: BytesLike): DecodedValue;
   decodeFunctionData(functionFragment: 'register', data: BytesLike): DecodedValue;
@@ -75,8 +79,10 @@ interface CounterContractAbiInterface extends Interface {
   decodeFunctionData(functionFragment: 'set_owner', data: BytesLike): DecodedValue;
   decodeFunctionData(functionFragment: 'expiry', data: BytesLike): DecodedValue;
   decodeFunctionData(functionFragment: 'getRecord', data: BytesLike): DecodedValue;
+  decodeFunctionData(functionFragment: 'getRecordCount', data: BytesLike): DecodedValue;
   decodeFunctionData(functionFragment: 'identity', data: BytesLike): DecodedValue;
   decodeFunctionData(functionFragment: 'owner', data: BytesLike): DecodedValue;
+  decodeFunctionData(functionFragment: 'recordByName', data: BytesLike): DecodedValue;
 }
 
 export class CounterContractAbi extends Contract {
@@ -88,7 +94,9 @@ export class CounterContractAbi extends Contract {
     set_owner: InvokeFunction<[name: string, owner: IdentityInput], void>;
     expiry: InvokeFunction<[name: string], ResultOutput<BN, RegistrationValidityErrorOutput>>;
     getRecord: InvokeFunction<[index: BigNumberish], ResultOutput<RecordOutput, RegistrationValidityErrorOutput>>;
+    getRecordCount: InvokeFunction<[], BN>;
     identity: InvokeFunction<[name: string], ResultOutput<IdentityOutput, RegistrationValidityErrorOutput>>;
     owner: InvokeFunction<[name: string], ResultOutput<IdentityOutput, RegistrationValidityErrorOutput>>;
+    recordByName: InvokeFunction<[name: string], ResultOutput<RecordOutput, RegistrationValidityErrorOutput>>;
   };
 }

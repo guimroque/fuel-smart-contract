@@ -1,32 +1,40 @@
 import { useEffect, useState } from "react";
 import { CounterContractAbi } from "../contracts";
-import { WalletLocked, bn, Wallet, Address } from "fuels";
 import { useFuel } from "../hooks/useFuel";
-import { AddressInput, ContractIdInput, IdentityInput } from "../contracts/CounterContractAbi";
+import { AddressInput, RecordOutput } from "../contracts/CounterContractAbi";
+import ItemCard from "./ItemCard";
 interface ListItemsProps {
   contract: CounterContractAbi | null;
+}
+interface Item {
+    Ok: RecordOutput
 }
 
 export default function ListItem({contract}: ListItemsProps){
     const [metadata, setMetadata] = useState<string>("");
+    const [nameUsed, setNameUsed] = useState<Item>()
     const [price, setPrice] = useState<string>("0");
     const [status, setStatus] = useState<'success' | 'error' | 'loading' | 'none'>('none');
     const [fuel] = useFuel();
     
 
     useEffect(()=> {
-        findByName();
-    }, [])
+        if(metadata.length > 0){
+            findByName();
+        }
+    }, [metadata])
 
+    
 
     const findByName = async() => {
         try{
-            // const value = await contract?.functions.getRecord(1).call().then((res) => {
-            //     console.log('[RES]: ', res)
-            //     return res;
-            // })
-            // console.log(value)
-            
+            const value = await contract?.functions.recordByName(await makeString(metadata)).get()
+            console.log(value?.value)
+            if(value?.value['Ok']){
+                setNameUsed(value.value)
+            }else if(value?.value['Err']){
+                setNameUsed(undefined)
+            }
         } catch (e) {
             console.log("ERROR:", e);
         }
@@ -36,14 +44,12 @@ export default function ListItem({contract}: ListItemsProps){
         e.preventDefault();
         setStatus('loading')
         const account_identity = contract?.account?.address.toString() as unknown as AddressInput;
-        const contract_id = contract?.id.toString() as unknown as ContractIdInput;
+        
         if(contract !== null && account_identity !== null){
             try {
                 const account = await fuel.currentAccount();
                 const walet = await fuel.getWallet(account);
                 if(contract !== null){
-                    // const { value } = await contract.functions.findByName(await makeString(metadata)).get();
-                    // console.log('[ITEM]: ', value)
                     const {value} = await contract.functions.register(
                         await makeString(metadata),
                         price,
@@ -112,19 +118,22 @@ export default function ListItem({contract}: ListItemsProps){
                       />
                 </div>
 
-                <div className="form-control">
-                    <button type="submit">List item</button>
-                </div>
+                {
+                    nameUsed == undefined &&<div className="form-control">
+                        <button type="submit">List item</button>
+                    </div>
+                }
             </form>
             }
-
+            {
+                !!nameUsed &&
+                <div className="items-container">
+                    <ItemCard contract={contract} item={nameUsed.Ok}/>
+                </div>
+            }
             {status === 'success' && <div>Item successfully listed!</div>}
             {status === 'error' && <div>Error listing item. Please try again.</div>}
             {status === 'loading' && <div>Listing item...</div>}
         </div>
     )
-}
-
-function identityInput(metadata: string, walletOwner: WalletLocked) {
-    throw new Error("Function not implemented.");
 }

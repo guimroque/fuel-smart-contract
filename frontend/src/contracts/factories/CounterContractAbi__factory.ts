@@ -251,6 +251,11 @@ const _abi = {
           "name": "owner",
           "type": 4,
           "typeArguments": null
+        },
+        {
+          "name": "name",
+          "type": 9,
+          "typeArguments": null
         }
       ],
       "typeParameters": null
@@ -306,15 +311,15 @@ const _abi = {
       },
       "attributes": [
         {
-          "name": "payable",
-          "arguments": []
-        },
-        {
           "name": "storage",
           "arguments": [
             "read",
             "write"
           ]
+        },
+        {
+          "name": "payable",
+          "arguments": []
         }
       ]
     },
@@ -488,6 +493,23 @@ const _abi = {
       ]
     },
     {
+      "inputs": [],
+      "name": "getRecordCount",
+      "output": {
+        "name": "",
+        "type": 17,
+        "typeArguments": null
+      },
+      "attributes": [
+        {
+          "name": "storage",
+          "arguments": [
+            "read"
+          ]
+        }
+      ]
+    },
+    {
       "inputs": [
         {
           "name": "name",
@@ -537,6 +559,40 @@ const _abi = {
           {
             "name": "",
             "type": 4,
+            "typeArguments": null
+          },
+          {
+            "name": "",
+            "type": 5,
+            "typeArguments": null
+          }
+        ]
+      },
+      "attributes": [
+        {
+          "name": "storage",
+          "arguments": [
+            "read"
+          ]
+        }
+      ]
+    },
+    {
+      "inputs": [
+        {
+          "name": "name",
+          "type": 9,
+          "typeArguments": null
+        }
+      ],
+      "name": "recordByName",
+      "output": {
+        "name": "",
+        "type": 6,
+        "typeArguments": [
+          {
+            "name": "",
+            "type": 15,
             "typeArguments": null
           },
           {
@@ -695,7 +751,7 @@ const _abi = {
         "type": 11,
         "typeArguments": []
       },
-      "offset": 10384
+      "offset": 11108
     },
     {
       "name": "PRICE_PER_HUNDRED",
@@ -704,7 +760,7 @@ const _abi = {
         "type": 17,
         "typeArguments": null
       },
-      "offset": 10424
+      "offset": 11148
     },
     {
       "name": "UNITY_TIME",
@@ -713,7 +769,7 @@ const _abi = {
         "type": 17,
         "typeArguments": null
       },
-      "offset": 10416
+      "offset": 11140
     }
   ]
 }

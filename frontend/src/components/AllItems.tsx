@@ -4,30 +4,37 @@ import { CounterContractAbi } from "../contracts";
 
 import ItemCard from "./ItemCard";
 import { useFuel } from "../hooks/useFuel";
-import { Vec } from "../contracts/common";
-import { Address } from "fuels/*";
+import { RecordOutput } from "../contracts/CounterContractAbi";
 
 interface AllItemsProps {
   contract: CounterContractAbi | null;
 }
 
+interface Item {
+  Ok: RecordOutput
+}
+
 export default function AllItems({ contract }: AllItemsProps) {
-  //const [items, setItems] = useState<ItemOutput[]>([]);
+  const [items, setItems] = useState<Item[] | undefined>([]);
   const [itemCount, setItemCount] = useState<number>(0);
   const [fuel] = useFuel();
   const [status, setStatus] = useState<'success' | 'loading' | 'error'>('loading');
-
+  const [inputValue, setInputValue] = useState<boolean>(false)
 
   useEffect(() => {
     async function getAllItems() {
-      console.log('[get_all_items]: ')
       if (contract !== null && contract.account?.address !== null) {
         try {
           const wallet_address = await fuel.currentAccount();
-          const wallet = await fuel.getWallet(wallet_address);
-          const {value} = await contract.functions.getRecord(1).get();
-          console.log(value)
-          
+          const {value} = await contract.functions.getRecordCount().get();
+          let formattedValue = parseFloat(value.format()) * 1_000_000_000;
+          let list = []
+          setItemCount(formattedValue);
+          for (let i=1; i <= formattedValue; i++){
+            const result = await contract.functions.getRecord(i).get();
+            list.push(result.value)
+          }
+          setItems( inputValue ? await getMyItems(list) : list )
           setStatus('success')
         } catch (e) {
           setStatus('error')
@@ -36,29 +43,17 @@ export default function AllItems({ contract }: AllItemsProps) {
       }
     }
     getAllItems();
-    //getMyItems();
-  }, [contract]);
+  }, [inputValue]);
 
-  const getMyItems = async() => {
+
+  const getMyItems = async(item: Item[]) => {
     try{
-      //console.log('[BUSCA MEUS ITEMS]: ')
-    // const input = {
-    //   Address: await contract?.,
-    //   ContractId: contract?.id
-    // } as unknown as IdentityInput;
-
-
-
-    // console.log('[INPUT]: ', contract?.interface)
-    // console.log('[INPUT]: ', contract?.provider)
-    
-    // const result = await contract?.functions.getMyItems(
-    //   input
-    // ).get() as unknown as ItemOutput[];
-    // console.log('[GET_MY_ITEMS]: ', result)
-    // console.log('[GET_MY_ITEMS]', result.forEach((e)=> {
-    //   return e
-    // }))
+        const myItems = !!items && items.length>0 ? items.filter((e) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+            return e['Ok'].owner.Address?.value.toString() === contract?.account?.address.toB256()
+        }) : []
+        console.log(myItems)
+        return myItems
     }catch(e){
       console.log(e)
     }
@@ -69,16 +64,18 @@ export default function AllItems({ contract }: AllItemsProps) {
       <h2>All Items</h2>
       {status === 'success' &&
         <div>
-          {itemCount === 0 ? (
+          {!!items && items.length>0 && items.length <= 0 ? (
             <div>Uh oh! No items have been listed yet</div>
           ) : (
-            <div>
+            <div >
               <div>Total items: {itemCount}</div>
-              {/* <div className="items-container" style={{display: 'flex', flexDirection: 'column'}}>
-                  {items.map((item) => (
-                  <ItemCard key={item.id} contract={contract} item={item}/>
-              ))}
-              </div> */}
+              <div>My items </div>
+              <input type="radio" checked={inputValue} onClick={() => setInputValue(!inputValue)}/>
+              <div className="items-container" style={{display: 'flex', flexDirection: 'column'}}>
+                  {!!items && items.length>0 && items.map((item) => (
+                    <ItemCard contract={contract} item={item.Ok}/>
+                  ))}
+              </div>
           </div>
           )}
         </div>

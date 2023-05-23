@@ -7,7 +7,7 @@ import AllItems from "./components/AllItems";
 import ListItem from "./components/ListItem";
 import "./App.css";
 
-const CONTRACT_ID = "0xad6cb2ea1d3163f7e18577f5351a607c893caac4380abe81d248dd5c374a63f1"
+const CONTRACT_ID = "0xbfe522284db16ab74771b578eb66e8b95d13e818503ed3338f6c885e2b30cd76"
 
 function App() {
   const [wallet, setWallet] = useState<WalletLocked>();
@@ -21,7 +21,7 @@ function App() {
       console.log('[CURRENT_ACCOUNT]: ', currentAccount)
       const tempWallet = await fuel.getWallet(currentAccount)
 
-      console.log('[TEMP_WALLET]: ', await tempWallet.address)
+      //console.log('[TEMP_WALLET]: ', await tempWallet.address)
       setWallet(tempWallet)
     }
     if (fuel) getAccounts();

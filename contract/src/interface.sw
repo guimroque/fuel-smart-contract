@@ -120,4 +120,14 @@ abi Info {
     /// * Index inválido
     #[storage(read)]
     fn getRecord(index: u64) -> Result<Record, RegistrationValidityError>;
+
+    /// Retorna a quantidade de registros
+    ///
+    #[storage(read)]
+    fn getRecordCount() -> u64;
+
+
+    #[storage(read)]
+    fn recordByName(name: str[12]) -> Result<Record, RegistrationValidityError>;
+
 }
